@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Search - LibroDB{% endblock %}
+
+{% block content %}
+<div x-data="searchComp()">
+    
+    {% include 'partials/search_bar.html' with context %}
+
+    <div class="mb-8">
+        <div class="flex items-center gap-4 mb-6">
+            <h2 class="text-sm font-bold mono text-accent uppercase">>> Search Results</h2>
+            <div class="h-px flex-1 bg-elevated"></div>
+            
+            <div x-show="loading" class="animate-spin h-4 w-4 border-2 border-accent border-t-transparent rounded-full"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <template x-for="book in results" :key="book.google_id">
+                <div class="book-card border border-elevated rounded-xl cursor-pointer overflow-hidden group flex flex-col h-60"
+                            @click="window.location.href = `/book/${book.google_id}`">
+            
+                    <div class="flex flex-1 overflow-hidden">
+                        <div class="w-1/3 bg-elevated flex-shrink-0">
+                            <img
+                                :src="book.thumbnail || 'https://via.placeholder.com/400x600?text=No+Cover'"
+                                class="object-cover h-full w-full grayscale group-hover:grayscale-0 transition-all duration-500"
+                            />
+                        </div>
+            
+                        <div class="w-2/3 p-3 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg text-text-main truncate" x-text="book.title"></h3>
+                                <p class="text-sm text-text-muted italic truncate" x-text="book.author_name"></p>
+                            </div>
+            
+                            <div class="flex flex-col gap-0.5 mt-1 text-[13px] text-text-muted">
+                                <p class="truncate">
+                                    <span class="font-medium mr-1 text-text-dim">Published:</span>
+                                    <span x-text="book.published_date ? book.published_date.slice(0,4) : 'N/A'"></span>
+                                </p>
+                                <p class="truncate">
+                                    <span class="font-medium mr-1 text-text-dim">Pages:</span>
+                                    <span x-text="book.page_count || 'N/A'"></span>
+                                </p>
+                            </div>
+                            <p class="text-sm text-text-muted line-clamp-3 min-h-[3.6em] mt-1" x-text="book.description"></p>
+                        </div>
+                    </div>
+            
+                    <div class="h-10 px-4 bg-surface/80 border-t border-elevated flex justify-end items-center">
+                        </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/searchBook.js') }}"></script>
+{% endblock %}

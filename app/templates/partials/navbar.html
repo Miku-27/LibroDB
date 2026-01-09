@@ -1,0 +1,56 @@
+<nav class="sticky top-0 z-50 border-b border-elevated bg-base/70 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="{{ url_for('pages.view.library_route') }}" class="flex items-center gap-2 cursor-pointer group">
+            <div class="w-8 h-8 bg-accent rounded flex items-center justify-center text-base font-bold group-hover:bg-accent transition">L</div>
+            <span class="text-xl font-bold tracking-tighter uppercase">Libro<span class="text-accent">DB</span></span>
+        </a>
+
+        <div class="flex items-center gap-8">
+            <div class="md:flex gap-6 text-sm font-medium text-text-main">
+                <a href="{{ url_for('pages.view.library_route') }}" class="hover:text-accent transition">Library</a>
+                <a href="{{ url_for('pages.view.search_book_route') }}" class="hover:text-accent transition">Search</a>
+            <!-- <a href="/stats" class="hover:text-accent transition">Stats</a> -->
+            </div>
+
+            <div x-data="navbarReactive()" class="relative">
+                <button @click="navbarOpen = !navbarOpen" @click.away="navbarOpen = false" 
+                        class="flex items-center gap-2 px-4 py-1.5 bg-accent-hover text-base rounded-md hover:bg-accent transition font-bold text-sm">
+                    Profile
+                    <svg class="w-4 h-4 transition-transform" :class="navbarOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <div x-show="navbarOpen" 
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="opacity-100 scale-100"
+                     x-transition:leave-end="opacity-0 scale-95"
+                     class="absolute right-0 mt-2 w-48 bg-surface border border-elevated rounded-xl shadow-2xl py-2 z-[60]"
+                     x-cloak>
+                    
+                    <div class="px-4 py-2 border-b border-elevated mb-1">
+                        <p class="text-[10px] font-bold text-text-dim uppercase tracking-widest">User Settings</p>
+                    </div>
+
+                    <a href="/profile" class="flex items-center px-4 py-2 text-sm text-accent-hover hover:bg-elevated hover:text-accent transition">
+                        Change Password
+                    </a>
+
+                    <button @click="toggleThemes()" class="w-full flex justify-between items-center px-4 py-2 text-sm text-accent-hover hover:bg-elevated hover:text-accent transition">
+                        <span>Theme</span>
+                        <span class="text-[10px] bg-elevated px-1.5 py-0.5 rounded text-text-dim uppercase" x-text="themes[currentThemeIndex]"></span>
+                    </button>
+
+                    <div class="h-px bg-elevated my-1"></div>
+
+                    <a @click="logoutUser()" class="flex items-center px-4 py-2 text-sm text-danger hover:bg-danger-bg/10 transition">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

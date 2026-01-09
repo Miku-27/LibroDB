@@ -1,0 +1,28 @@
+[project]
+name = "librodb"
+version = "0.1.0"
+description = "A book Catalogue web Project"
+authors = [
+    {name = "Deepak"}
+]
+
+requires-python = ">=3.12, <4.0"
+dependencies = [
+    "flask (>=3.1.2,<4.0.0)",
+    "flask-sqlalchemy (>=3.1.1,<4.0.0)",
+    "pymysql (>=1.1.2,<2.0.0)",
+    "requests (>=2.32.5,<3.0.0)",
+    "flask-jwt-extended (>=4.7.1,<5.0.0)",
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "flask-talisman (>=1.1.0,<2.0.0)",
+    "flask-limiter (>=4.1.1,<5.0.0)",
+    "flask-migrate (>=4.1.0,<5.0.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

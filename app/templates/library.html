@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}library - LibroDB{% endblock %}
+
+{% block content %}
+<div x-data="library()" x-init="init()">
+    <!-- Control Bar -->
+    {% include 'partials/control_bar.html' %}
+
+    <div class="flex items-center gap-4 mb-8">
+        <h2 class="text-sm font-bold mono text-accent uppercase">>> Collection</h2>
+        <div class="h-px flex-1 bg-elevated"></div>
+    </div>
+
+    
+    <!-- Book Grid -->
+    <div  id="bookGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <template x-for="book in books" :key="book.id">
+            <div @click="window.location.href = `/book/${book.id}`" 
+                 class="book-card border border-elevated cursor-pointer rounded-xl overflow-hidden group flex flex-col h-60 relative">
+                
+                <div class="flex flex-1 overflow-hidden">
+                    <div class="w-1/3 bg-elevated flex-shrink-0">
+                        <img :src="book.thumbnail" :alt="book.title"
+                             class="object-cover h-full w-full grayscale group-hover:grayscale-0 transition-all duration-500">
+                    </div>
+                    <div class="w-2/3 p-3 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-text-main text-lg leading-tight truncate mt-1" x-text="book.title"></h3>
+                            <p class="text-sm text-text-muted italic truncate mt-0.5" x-text="book.author_name"></p>
+                        </div>
+                    
+                        <div class="flex flex-col gap-0.5 mt-1 text-[13px] text-text-muted">
+                            <p class="truncate"><span class="font-medium mr-1 text-text-dim">Published:</span><span x-text="book.published_date.slice(0,4)" class="text-text-muted"></span></p>
+                            <p class="truncate"><span class="font-medium mr-1 text-text-dim">Categories:</span><span x-text="book.categories" class="text-text-muted"></span></p>
+                            <p class="truncate"><span class="font-medium mr-1 text-text-dim">Language:</span><span x-text="book.language.toUpperCase()" class="text-text-muted"></span></p>
+                        </div>
+                    
+                        <div>
+                            <p class="mono text-[13px] text-text-dim mb-0 truncate">Status</p>
+                            <p class="text-accent font-bold text-sm tracking-wider uppercase truncate" x-text="book.status"></p>
+                        </div>
+                    </div>
+                </div>
+        
+                <div x-show="activeMenuId === book.id" 
+                     @click.away="activeMenuId = null"
+                     @click.stop
+                     x-transition:enter="transition duration-200"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     class="absolute inset-0 bg-surface z-50 flex flex-col p-4"
+                     x-cloak>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-[10px] font-bold text-accent uppercase tracking-widest mono">Quick Actions</span>
+                        <button @click="activeMenuId = null" class="text-text-dim hover:text-white transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+        
+                    <div class="flex-1 flex flex-col gap-2">
+                        <div class="grid grid-cols-3 gap-2">
+                            <button @click="updateBookStatus(book.id, 'Reading')" class="py-2 bg-elevated hover:bg-border-strong text-text-main rounded-lg text-[12px] border border-border-strong transition">Reading</button>
+                            <button @click="updateBookStatus(book.id, 'Completed')" class="py-2 bg-elevated hover:bg-border-strong text-text-main rounded-lg text-[12px] border border-border-strong transition">Completed</button>
+                            <button @click="updateBookStatus(book.id, 'Pending')" class="py-2 bg-elevated hover:bg-border-strong text-text-main rounded-lg text-[12px] border border-border-strong transition">Pending</button>
+                        </div>
+                        
+                        <button @click="openAddToCollection(book.id)" 
+                            class="w-full py-2 bg-elevated hover:bg-border-strong text-text-main rounded-lg text-[12px] border border-border-strong transition">
+                            Add to Collection
+                        </button>
+
+                        <button @click="removeBook(book.id,'collection',selectedCollectionId)" class="w-full py-2 bg-elevated hover:bg-border-strong text-text-main rounded-lg text-[12px] border border-border-strong transition">
+                            Remove from Collection
+                        </button>
+
+                        <button @click="removeBook(book.id, 'library')" class="w-full py-2 mt-auto bg-danger-bg/20 hover:bg-danger-bg/40 text-danger rounded-lg text-[12px] font-bold border border-danger-bg/30 transition">
+                            Remove from Library
+                        </button>
+                    </div>
+                </div>
+        
+                <div class="h-10 px-4 bg-surface/80 border-t border-elevated flex justify-end items-center relative flex-shrink-0">
+                    <button @click.stop="activeMenuId = (activeMenuId === book.id ? null : book.id)" 
+                            class="p-1.5 rounded-full hover:bg-elevated transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" 
+                             class="w-5 h-5 text-text-muted hover:text-accent transition">
+                            <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </template>
+    </div>
+
+        <!-- Pagination -->
+    <div class="flex justify-center items-center gap-4 mt-8">
+      <button @click="getBooks({page:currentPage-1})":disabled="currentPage <= 1"
+          class="px-4 py-1 bg-surface rounded hover:bg-bg-elevated disabled:opacity-40">Previous
+      </button>
+    
+      <span class="text-sm text-text-muted">
+        <span x-text="currentPage"></span> of <span x-text="totalPages"></span>
+      </span>
+    
+      <button @click="getBooks({page:currentPage+1})" :disabled="currentPage >= totalPages"
+          class="px-4 py-1 bg-elevated rounded hover:bg-border-strong disabled:opacity-40"1>Next
+      </button>
+    </div>
+    
+    
+    <!-- modal -->
+    <div x-show="modal" 
+      
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md" 
+        x-cloak>
+
+       <div @click.away="modal = null" 
+            class="bg-surface border border-elevated w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+           
+           <div class="px-6 py-4 border-b border-elevated flex justify-between items-center bg-surface/50">
+               <h3 class="text-lg font-bold text-text-main" 
+                   x-text="modal === 'collections' ? 'Manage Collections' : 'Select Destination'"></h3>
+               <button @click="modal = null" class="text-text-dim hover:text-white transition-colors">
+                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+               </button>
+           </div>
+       
+           <div class="p-6 overflow-y-auto">
+               
+                <template x-if="modal === 'collections'">
+                   <div class="space-y-6">
+                       
+                       <div class="bg-elevated/50 p-4 rounded-xl border border-border-strong/50">
+                           <label class="block text-xs font-bold text-text-dim uppercase mb-2">Create New</label>
+                           <div class="flex gap-2">
+                               <input x-model="newCollectionName" type="text" placeholder="Collection name..." 
+                                      class="flex-1 bg-surface border-border-strong rounded-lg px-3 py-2 text-sm text-text-main focus:ring-1 focus:ring-accent outline-none">
+                               <button @click="addCollection()" class="bg-accent-hover hover:bg-accent text-base px-4 py-2 rounded-lg text-sm font-bold transition">
+                                   Add
+                               </button>
+                           </div>
+                       </div>
+                   
+                       <div class="space-y-3">
+                           <label class="block text-xs font-bold text-text-dim uppercase">Your Collections</label>
+                           <div class="space-y-2 h-72 overflow-y-auto pr-2 custom-scrollbar">
+                                <template x-for="item in collections" :key="item.collection_id">
+                                    <div class="group flex items-center justify-between p-3 bg-elevated/30 border border-elevated hover:border-border-strong rounded-xl transition h-14">
+                                        
+                                        <div class="flex-1 min-w-0 mr-4">
+                                            <template x-if="editingId !== item.collection_id">
+                                                <button @click="filters.collectionId=item.collection_id; modal = null;selectedCollectionId=item.collection_id" 
+                                                        class="w-full text-left text-text-main hover:text-accent font-medium text-sm transition truncate px-2 py-1"
+                                                        x-text="item.collection_name">
+                                                </button>
+                                            </template>
+                                            
+                                            <template x-if="editingId === item.collection_id">
+                                                <input x-model="editName" 
+                                                       @keyup.enter="saveRename(item.collection_id)"
+                                                       @keyup.escape="editingId = null"
+                                                       auto-focus
+                                                       class="w-full bg-surface border-accent/50 border rounded px-2 py-1 text-sm text-text-main focus:outline-none ring-1 ring-accent/20">
+                                            </template>
+                                        </div>
+                                    
+                                        <div class="flex items-center gap-1 flex-shrink-0 w-16 justify-end">
+                                            <button @click="editingId = item.collection_id; editName = item.collection_name" 
+                                                    class="p-1.5 text-text-dim hover:text-accent transition" title="Rename">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                            </button>
+                                            <button @click="deleteCol(item.collection_id)" 
+                                                    class="p-1.5 text-text-dim hover:text-danger transition" title="Delete">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </div>
+                                    
+                                    </div>
+                                </template>
+                           </div>
+                       </div>
+                   </div>
+                </template>
+           
+                <template x-if="modal === 'addToCollection'">
+                            <div class="space-y-2 h-72 overflow-y-auto pr-2 custom-scrollbar">
+                                <div class="group flex items-center justify-between p-3 bg-elevated/30 border border-elevated hover:border-border-strong rounded-xl transition h-14">
+                                        
+                                    <div class="flex-1 min-w-0 mr-4">
+                                        <button @click="addBook('library',null); modal = null" 
+                                                class="w-full text-left text-text-main hover:text-accent font-medium text-sm transition truncate px-2 py-1">
+                                                Library
+                                        </button>
+                                    </div>
+                                
+                                    <div class="flex items-center flex-shrink-0">
+                                        <button @click="addBook('collection', item.collection_id); modal = null" 
+                                                class="p-1.5 text-text-dim hover:text-accent transition" title="Add to this collection">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <template x-for="item in collections" :key="item.collection_id">
+                                    <div class="group flex items-center justify-between p-3 bg-elevated/30 border border-elevated hover:border-border-strong rounded-xl transition h-14">
+                                        
+                                        <div class="flex-1 min-w-0 mr-4">
+                                            <button @click="addBook('collection', item.collection_id); modal = null" 
+                                                    class="w-full text-left text-text-main hover:text-accent font-medium text-sm transition truncate px-2 py-1"
+                                                    x-text="item.collection_name">
+                                            </button>
+                                        </div>
+                                    
+                                        <div class="flex items-center flex-shrink-0">
+                                            <button @click="addBook('collection', item.collection_id); modal = null" 
+                                                    class="p-1.5 text-text-dim hover:text-accent transition" title="Add to this collection">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                
+                                <template x-if="collections.length === 0">
+                                    <div class="flex flex-col items-center justify-center py-10 bg-elevated/20 border border-dashed border-elevated rounded-xl">
+                                        <p class="text-sm text-text-dim mono">No collections yet</p>
+                                    </div>
+                                </template>
+                            </div>
+                </template>
+           </div>
+       </div>
+    </div>
+    
+</div>
+
+    
+{% endblock %}
+
+{% block scripts %}
+    <script type="application/json" id="bootstrap-books">
+        {{ data | tojson }}
+    </script>
+    <script src="{{ url_for('static', filename='js/library.js') }}"></script>
+{% endblock %}
+

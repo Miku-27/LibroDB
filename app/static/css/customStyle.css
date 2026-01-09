@@ -1,0 +1,124 @@
+:root[data-theme="Dark"] {
+   
+    --accent: 5 150 105;          /* emerald-500 */
+    --accent-hover: 16 185 129;     /* emerald-600 */
+    --accent-strong: 4 120 87;     /* emerald-700 */
+    --accent-foreground: 255 255 255;
+  
+    --bg-base: 9 9 11;          /* zinc-950 */
+    --bg-surface: 24 24 27;     /* zinc-900 */
+    --bg-elevated: 39 39 42;    /* zinc-800 */
+
+
+    --text-main: 244 244 245;   /* zinc-100 */
+    --text-muted: 212 212 216;  /* zinc-300 */
+    --text-dim: 113 113 122;    /* zinc-500 */
+
+    --border: 39 39 42;         /* zinc-800 */
+    --border-strong: 63 63 70;  /* zinc-700 */
+ 
+    --danger:239 68 68;      /* red-500 */
+    --danger-bg: 127 29 29;     /* red-900 */
+}
+
+:root[data-theme="Light"] {
+    
+    --accent: 16 130 105;
+    --accent-hover: 18 150 120;
+    --accent-strong: 12 105 85;
+    --accent-foreground: 248 249 248;
+  
+    --bg-base: 236 238 240;          
+    --bg-surface: 246 247 248;       
+    --bg-elevated: 226 229 232;      
+  
+    --text-main: 22 23 26;
+    --text-muted: 86 88 92;
+    --text-dim: 118 121 126;
+  
+    --border: 188 191 196;
+    --border-strong: 160 164 170;
+  
+    --danger: 239 68 68;
+    --danger-bg: 127 29 29;
+}
+
+:root[data-theme="Forest"] {
+    /* =========================
+       Accent / Primary Action
+       ========================= */
+    --accent: 59 130 246;            /* blue-500 */
+    --accent-hover: 96 165 250;      /* blue-400 */
+    --accent-strong: 37 99 235;      /* blue-600 */
+    --accent-foreground: 248 250 252;
+  
+    /* =========================
+       Background / Surfaces
+       ========================= */
+    --bg-base: 232 240 254;          /* soft blue tint */
+    --bg-surface: 245 248 255;       /* cards */
+    --bg-elevated: 220 231 250;      /* layering */
+  
+    /* =========================
+       Text
+       ========================= */
+    --text-main: 23 37 84;           /* slate/navy */
+    --text-muted: 71 85 105;         /* slate-600 */
+    --text-dim: 100 116 139;         /* slate-500 */
+  
+    /* =========================
+       Borders
+       ========================= */
+    --border: 178 197 235;           /* blue-gray */
+    --border-strong: 148 171 220;
+  
+    /* =========================
+       Danger / Destructive
+       ========================= */
+    --danger: 220 38 38;             /* red-600 */
+    --danger-bg: 254 226 226;
+}
+  
+  
+  
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: rgb(var(--bg-base));
+    color: rgb(var(--text-main));
+    margin: 0;
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+[x-cloak] { display: none !important; }
+.hidden { display: none; }
+
+.grid-bg {
+    background-image: radial-gradient(circle at 2px 2px, rgb(var(--border)) 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
+.book-card {
+    background: rgb(var(--bg-surface));
+    transition: all 0.2s ease;
+}
+
+.book-card:hover {
+    border-color: rgb(var(--accent));
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(var(--accent) / 0.1);
+}
+
+.info-card {
+    background: rgb(var(--bg-surface));
+    backdrop-filter: blur(8px);
+    background-color: rgba(var(--bg-surface) / 0.95);
+}
+
+.login-card {
+    background: rgb(var(--bg-surface));
+    border: 1px solid rgb(var(--border));
+}
+
+/* body.page-login { 
+    overflow: overflow-y-auto; 
+} */

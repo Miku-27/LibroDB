@@ -1,0 +1,10 @@
+{
+    "success": true,
+    "message": "Books fetched successfully",
+    "data": {
+      "books": [],
+      "page": 1,
+      "has_more": true
+    }
+  }
+  
