@@ -1,5 +1,5 @@
-document.addEventListener('alpine:init', () => {
-    Alpine.data('searchCompReactive', () => ({
+function searchComp() {
+    return {
         query: null,
         results: [],
         loading: false,
@@ -15,5 +15,5 @@ document.addEventListener('alpine:init', () => {
             this.results = data || [];
             this.loading = false;
         },
-    }))
-})
+    }
+}

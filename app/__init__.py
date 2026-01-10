@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from app.extensions import db,jwt,rate_limiter,migrate
 from app.api import api_bp
 from app.pages import pages_bp
-from app.utils.logger import attach_render_logger
+from app.utils.logger import attach_app_logger
 from flask_talisman import Talisman
 
 
@@ -34,7 +34,7 @@ def create_app():
         )
 
 
-    attach_render_logger()
+    attach_app_logger()
 
     db.init_app(app)
     jwt.init_app(app)

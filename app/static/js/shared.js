@@ -79,36 +79,11 @@ function customToastMessage(message,success){
     }));
 }
 
-// toast.js
-document.addEventListener('alpine:init', () => {
-    Alpine.data('toast', () => ({
-      show: false,
-      message: '',
-      type: 'false',
-  
-      colors: {
-        false: 'border-l-danger text-danger',
-        true: 'border-l-accent text-accent'
-      },
-  
-      init() {
-        window.addEventListener('show-toast', (e) => {
-          this.message = e.detail.message
-          this.type = e.detail.type || 'false'
-          this.show = true
-  
-          setTimeout(() => {
-            this.show = false
-          }, 5000)
-        })
-      },
-  
-      close() {
-        this.show = false
-      }
-    }))
 
-    Alpine.data('navbar', () => ({
+// NAVBAR RELATED JS CODE:
+const root = document.documentElement;
+function navbarReactive(){
+    return{
         navbarOpen: false,
         
         currentThemeIndex:0,
@@ -131,5 +106,5 @@ document.addEventListener('alpine:init', () => {
                 window.location.href = '/login';
             }
         }
-    }))
-})
+    }
+}

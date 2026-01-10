@@ -1,5 +1,5 @@
-document.addEventListener('alpine:init', () => {
-  Alpine.data('libraryReactive', () => ({
+function library() {
+    return {
       //grid related
       books: [],
       currentPage:1,
@@ -154,6 +154,6 @@ document.addEventListener('alpine:init', () => {
 
           this.editingId = null;
       }
-    }))
-  })
+    }
+  }
   

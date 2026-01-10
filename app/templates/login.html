@@ -11,7 +11,7 @@
 {% block layout %}
 {# We override the layout block to center the card, bypassing the standard max-w-7xl main container #}
 <div class="min-h-[calc(100vh-64px)] flex items-center justify-center px-6">
-    <div class="w-full max-w-md" x-data="loginHandlerReactive">
+    <div class="w-full max-w-md" x-data="loginHandler()">
         <div class="login-card border border-elevated rounded-xl p-8 shadow-xl">
             
             <div class="mb-6">

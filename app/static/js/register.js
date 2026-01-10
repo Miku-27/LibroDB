@@ -1,6 +1,5 @@
-
-document.addEventListener('alpine:init', () => {
-    Alpine.data('registerHandlerReactive', () => ({
+function registerHandler() {
+    return {
         formData: {
             username:'',
             usermail: '',
@@ -15,5 +14,6 @@ document.addEventListener('alpine:init', () => {
             }
             this.loading = false;
         }
-    }))
-})
+    }
+}
+
