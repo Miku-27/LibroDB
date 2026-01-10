@@ -1,4 +1,5 @@
 import logging
+import sys
 
 def attach_app_logger():
     logging_format='%(asctime)s - %(levelname)s - [%(filename)s:%(funcName)s:%(lineno)d] - %(message)s'
@@ -15,14 +16,16 @@ def attach_app_logger():
     app_logger.propagate = False
 
 
-def logger_setup():
-    logging_level=logging.INFO
-    logging_format='%(asctime)s - %(levelname)s - [%(filename)s:%(funcName)s:%(lineno)d] - %(message)s'
-    file_handler=logging.FileHandler("app.log")
+def render_logger_setup():
+
+    logging_level = logging.INFO
+    logging_format = '%(asctime)s - %(levelname)s - [%(filename)s:%(funcName)s:%(lineno)d] - %(message)s'
+    formatter = logging.Formatter(logging_format)
+    
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(formatter)
 
     logging.basicConfig(
         level=logging_level,
-        format=logging_format,
-        handlers=[file_handler]
+        handlers=[console_handler]
     )
-
