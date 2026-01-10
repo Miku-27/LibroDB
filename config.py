@@ -36,7 +36,8 @@ class BaseConfig:
 
         "style-src": [
             "'self'", 
-            "fonts.googleapis.com"
+            "fonts.googleapis.com",
+            "'unsafe-inline'"
         ],
         "font-src": [
             "'self'", 
