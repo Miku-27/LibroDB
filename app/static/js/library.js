@@ -17,7 +17,12 @@ function library() {
       //grid related func
       init() {
         const data = JSON.parse(document.getElementById('bootstrap-books').textContent);
-        this.books = data.book_data.books;
+        this.books = (data.book_data.books).map(book => {
+            if (book.thumbnail) {
+                book.thumbnail = book.thumbnail.replace('http://', 'https://');
+            }
+            return book;
+        });
         this.currentPage = data.book_data.page;
         this.totalPages = data.book_data.total_pages;
 
