@@ -40,7 +40,6 @@ function library() {
         const url = `/api/library/books?${params.toString()}`;
         let [status,data] = await requestBackend(url,"GET");
         if (!status){return;}
-        this.books = data.books;
         this.books = (data.books).map(book => {
             if (book.thumbnail) {
                 book.thumbnail = book.thumbnail.replace('http://', 'https://');
