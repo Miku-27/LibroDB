@@ -3,7 +3,7 @@ block navbar %} {% endblock %} {% block layout %} {# We override the layout
 block to center the card, bypassing the standard max-w-7xl main container #}
 <div class="min-h-screen w-full flex flex-col items-center justify-center px-6 py-10 overflow-y-auto no-scrollbar"
 >
-  <div class="w-full max-w-md my-auto" x-data="registerHandler()">
+  <div class="w-full max-w-md my-auto" x-data="registerHandlerReactive">
     <div class="login-card rounded-xl p-8 shadow-xl">
       <div class="mb-6">
         <h2 class="text-2xl font-bold text-text-main mb-1">Create Account</h2>

@@ -1,8 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get('token');
 
-function forgetPasswordReactive() {
-    return {
+document.addEventListener('alpine:init', () => {
+    Alpine.data('passwordResetReactive', () => ({
         show: false,
         formData: {
             resetToken: token,
@@ -32,6 +32,5 @@ function forgetPasswordReactive() {
                 window.location.href = '/login';
             }
         }
-    }
-}
-
+    }))
+})

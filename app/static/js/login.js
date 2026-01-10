@@ -1,5 +1,6 @@
-function loginHandler() {
-    return {
+
+document.addEventListener('alpine:init', () => {
+    Alpine.data('loginHandlerReactive', () => ({
         formData: {
             usermail: '',
             password: ''
@@ -13,6 +14,5 @@ function loginHandler() {
             }
             this.loading = false;
         }
-    }
-}
-
+    }))
+})
