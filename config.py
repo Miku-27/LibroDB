@@ -18,7 +18,6 @@ class BaseConfig:
     JWT_CSRF_CHECK_FORM = False
     JWT_COOKIE_SECURE = False
 
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
@@ -43,6 +42,10 @@ class BaseConfig:
             "'self'", 
             "fonts.gstatic.com"
         ],
+        "script-src":[
+            "'self'",
+            "'unsafe-eval'"
+        ]
     }
 
 class DevelopmentConfig(BaseConfig):
@@ -50,6 +53,15 @@ class DevelopmentConfig(BaseConfig):
     JWT_COOKIE_SECURE = False
     TALISMAN_ENABLED = False
     TALISMAN_FORCED_HTTPS = False
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL_DEV")
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "connect_args": {
+            "ssl": {
+                "ca": os.getenv("CERT_PATH_DEV") 
+            }
+        }
+    }
     
 
 class ProductionConfig(BaseConfig):
@@ -57,6 +69,7 @@ class ProductionConfig(BaseConfig):
     JWT_COOKIE_SECURE = True
     TALISMAN_ENABLED = True
     TALISMAN_FORCED_HTTPS = True
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     SQLALCHEMY_ENGINE_OPTIONS = {
         "pool_pre_ping": True,
         "connect_args": {
