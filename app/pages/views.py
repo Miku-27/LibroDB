@@ -22,7 +22,6 @@ def book_detail_route(book_id):
 
     user_id = get_jwt_identity() 
     book_result = get_book_info_service(book_id,user_id)
-    print(book_result)
     return render_template("book-detail.html",book = book_result.get("data").get("book"),book_existence = book_result.get("data").get("book_existence"))
 
 
