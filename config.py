@@ -61,7 +61,7 @@ class ProductionConfig(BaseConfig):
         "pool_pre_ping": True,
         "connect_args": {
             "ssl": {
-                "ca": "/etc/ssl/certs/ca-certificates.crt" 
+                "ca": os.getenv("CERT_PATH") 
             }
         }
     }
