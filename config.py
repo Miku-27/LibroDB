@@ -57,3 +57,11 @@ class ProductionConfig(BaseConfig):
     JWT_COOKIE_SECURE = True
     TALISMAN_ENABLED = True
     TALISMAN_FORCED_HTTPS = True
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "connect_args": {
+            "ssl": {
+                "ca": "/etc/ssl/certs/ca-certificates.crt" 
+            }
+        }
+    }
