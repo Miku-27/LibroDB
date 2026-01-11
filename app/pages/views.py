@@ -25,7 +25,7 @@ def book_detail_route(book_id):
     return render_template("book-detail.html",book = book_result.get("data").get("book"),book_existence = book_result.get("data").get("book_existence"))
 
 @view.route("/")
-@view.route("index")
+@view.route("/index")
 def index_route():
     return render_template("index.html")
 
