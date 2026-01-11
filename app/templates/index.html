@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="Dark" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibroDB - Your Library, Digitized</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+</head>
+<body class="bg-base text-text-main min-h-screen bg-[radial-gradient(circle_at_1px_1px,rgb(var(--border))_1px,transparent_0)] bg-[size:32px_32px]">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 border-b border-elevated bg-base/70 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="flex items-center gap-2 cursor-pointer group">
+                <div class="w-8 h-8 bg-accent rounded flex items-center justify-center text-base font-bold group-hover:bg-accent-hover transition">L</div>
+                <span class="text-xl font-bold tracking-tighter uppercase">Libro<span class="text-accent">DB</span></span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-text-main">
+                <a href="#why" class="text-sm font-medium hover:text-accent transition">Why This Exists</a>
+                <a href="#tech" class="text-sm font-medium hover:text-accent transition">Technology</a>
+
+                <div x-data="indexReactive()">
+                    <button 
+                      @click="toggleThemes()" 
+                      class=" w-9 h-9 
+                      flex items-center justify-center
+                      rounded-md
+                      text-text-muted
+                      hover:text-accent
+                      hover:bg-bg-elevated
+                      transition
+                      border border-transparent
+                      hover:border-border"
+                    >
+                      <div class="relative w-6 h-6 flex items-center justify-center">
+                        <!-- Theme SVGs -->
+                        <svg x-show="currentThemeIndex === 0" x-transition.duration.400ms class="absolute w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                  
+                        <svg x-show="currentThemeIndex === 1" x-transition.duration.400ms class="absolute w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707-.707M12 8a4 4 0 110 8 4 4 0 010-8z"></path>
+                        </svg>
+                  
+                        <svg x-show="currentThemeIndex === 2" x-transition.duration.400ms class="absolute w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07M2 12h20M8 8l-2-2M16 8l2-2M8 16l-2 2M16 16l2 2"/>                          
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                  
+
+                <a href="{{ url_for('pages.view.register_route') }}" class="px-5 py-2 bg-accent-hover text-base rounded-md hover:bg-accent transition font-bold text-sm">
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center px-6">
+        <div class="max-w-7xl w-full -mt-30">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <div class="">
+                            <span class="inline-block px-3 py-1 bg-accent/10 border border-accent/30 rounded-full text-accent text-xs font-mono font-bold uppercase tracking-wider">
+                                Personal Engineering Project
+                            </span>
+                        </div>
+                        
+                        <h1 class="text-4xl md:text-[3.6rem] font-extrabold leading-[1.1] tracking-tighter">
+                            A clean, opinionated<br/>
+                            <span class="text-accent">personal library system</span>
+                        </h1>
+                        
+                        <p class="text-base text-text-muted leading-relaxed max-w-xl">
+                            LibroDB is a full-stack project centered on backend development, emphasizing clean structure, simple data models. The project evolved iteratively, with a focus on building a system that works well while remaining easy to reason about and extend.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#tech" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent-hover text-base rounded-lg hover:bg-accent transition font-bold text-base shadow-[0_0_60px_rgb(var(--accent)_/_0.35),_0_0_130px_rgb(var(--accent)_/_0.18),_0_0_220px_rgb(var(--accent)_/_0.1)] ">
+                            View Technical Decisions
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
+                        <a href="#why" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface border border-border-strong text-text-main rounded-lg hover:border-accent transition font-medium ">
+                            Why I Built This
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Content - Book Card Preview -->
+                <div class="relative">
+                    <div class="absolute inset-0 blur-3xl opacity-30"></div>
+                    <div class="relative group hover:shadow-[0_20px_40px_rgba(var(--accent)_/_0.20)] transition-all duration-300 ease-in-out hover:-translate-y-2 border border-elevated rounded-xl overflow-hidden bg-surface/80 backdrop-blur-sm animate-border">
+                        <div class="flex h-64">
+                            <div class="w-1/3 bg-elevated flex-shrink-0">
+                                <img src="https://books.google.com/books/publisher/content?id=LzIlEAAAQBAJ&printsec=frontcover&img=1&zoom=3&edge=curl" 
+                                     alt="Book Cover"
+                                     class="object-cover h-full w-full grayscale transition-all duration-500 group-hover:grayscale-0">
+                            </div>
+                            <div class="w-2/3 p-6 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="font-bold text-text-main text-xl leading-tight mb-2">The Cat Who Saved Books</h3>
+                                    <p class="text-sm text-text-muted italic">Sosuke Natsukawa</p>
+                                </div>
+                                
+                                <div class="space-y-2 text-sm text-text-muted">
+                                    <p><span class="font-medium text-text-muted">Published:</span> 2021</p>
+                                    <p><span class="font-medium text-text-muted">Categories:</span> Fiction / Magical Realism</p>
+                                    <p><span class="font-medium text-text-muted">Language:</span> EN</p>
+                                </div>
+                                
+                                <div>
+                                    <p class="font-mono text-xs text-text-muted mb-1">STATUS</p>
+                                    <p class="text-accent font-bold text-sm tracking-wider uppercase">Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-12 px-6 bg-surface/80 border-t border-elevated flex justify-between items-center">
+                            <span class="text-xs text-text-muted font-mono">LIBRO<span class="text-accent">DB</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section id="why" class="py-24 px-6 bg-surface/30">
+        <div class="max-w-3xl mx-auto text-center space-y-6">
+            <span class="inline-block px-3 py-1 bg-accent/10 border border-accent/30 rounded-full text-accent text-xs font-mono font-bold uppercase tracking-wider mb-4">
+                Philosophy
+            </span>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Why I Built LibroDB</h2>
+            <p class="text-text-muted text-lg leading-relaxed">
+                This project started as a way to practice building a complete system end-to-end: 
+                authentication, schema design, migrations, deployment, and UI polish — 
+                without relying on heavy frameworks to hide complexity.
+            </p>
+            <p class="text-text-muted text-base leading-relaxed max-w-xl mx-auto">
+                The goal wasn't scale or growth. It was <span class="text-accent font-medium">clarity</span>, 
+                <span class="text-accent font-medium">correctness</span>, 
+                and understanding every moving part.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="inline-block px-3 py-1 bg-accent/10 border border-accent/30 rounded-full text-accent text-xs font-mono font-bold uppercase tracking-wider mb-4">
+                    Core Capabilities
+                </span>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">What the system<br/><span class="gradient-text">actually does</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature Card 1 -->
+                <div class="rounded-xl p-6 space-y-4 bg-surface/80 border border-elevated transition-all duration-300 hover:bg-surface/90 hover:border-accent/50 hover:-translate-y-1 backdrop-blur-md">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-hover " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Structured Library Model</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            Uses a structured schema with clearly defined relationships, enabling consistent and predictable data access.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 2 -->
+                <div class="rounded-xl p-6 space-y-4 bg-surface/80 border border-elevated transition-all duration-300 hover:bg-surface/90 hover:border-accent/50 hover:-translate-y-1 backdrop-blur-md">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-hover " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Search & Filtering</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            Supports searching and filtering by title, author, status, and language through straightforward, predictable query patterns.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 3 -->
+                <div class="rounded-xl p-6 space-y-4 bg-surface/80 border border-elevated transition-all duration-300 hover:bg-surface/90 hover:border-accent/50 hover:-translate-y-1 backdrop-blur-md">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-hover " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Auth & Sessions</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            Implements authentication using JWTs stored in HTTP-only cookies, with CSRF protection to secure state-changing requests.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 4 -->
+                <div class="rounded-xl p-6 space-y-4 bg-surface/80 border border-elevated transition-all duration-300 hover:bg-surface/90 hover:border-accent/50 hover:-translate-y-1 backdrop-blur-md">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-hover " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Migrations</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            Manages database schema changes through version-controlled migrations, supporting incremental updates and rollbacks.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 5 -->
+                <div class="rounded-xl p-6 space-y-4 bg-surface/80 border border-elevated transition-all duration-300 hover:bg-surface/90 hover:border-accent/50 hover:-translate-y-1 backdrop-blur-md">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-hover " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Deployment</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            Deployed on managed infrastructure with a simple, repeatable process that keeps the focus on application behavior.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 6 -->
+                <div class="rounded-xl p-6 space-y-4 bg-surface/80 border border-elevated transition-all duration-300 hover:bg-surface/90 hover:border-accent/50 hover:-translate-y-1 backdrop-blur-md">
+                    <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-hover " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">UI Without Complexity</h3>
+                        <p class="text-text-muted text-sm leading-relaxed">
+                            A minimal UI using Alpine.js for interactivity and Tailwind CSS for styling, designed to support the backend rather than increasing complexity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="tech" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Built for <span class="gradient-text">Intentional Simplicity</span></h2>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-accent text-xl font-mono leading-none flex items-center h-[1.5rem]">→</span>
+                            <div>
+                                <h4 class="font-bold text-base text-text-main">Flask for request/response handling</h4>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <span class="text-accent text-xl font-mono leading-none flex items-center h-[1.5rem]">→</span>
+                            <div>
+                                <h4 class="font-bold text-base text-text-main">Managed MySQL (Aiven) with SSL/TLS connections</h4>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <span class="text-accent text-xl font-mono leading-none flex items-center h-[1.5rem]">→</span>
+                            <div>
+                                <h4 class="font-bold text-base text-text-main">Alpine.js for light, Reactive UI without a build step.</h4>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <span class="text-accent text-xl font-mono leading-none flex items-center h-[1.5rem]">→</span>
+                            <div>
+                                <h4 class="font-bold text-base text-text-main">Tailwind for predictable, maintainable styling</h4>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="text-accent text-xl font-mono leading-none flex items-center h-[1.5rem]">→</span>
+                            <div>
+                                <h4 class="font-bold text-base text-text-main">CSP and headers configured</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Content - Tech Stack -->
+                <div class="relative">
+                    <div class="absolute inset-0 bg-accent/20 blur-3xl"></div>
+                    <div class="relative bg-surface/80 rounded-xl p-8 space-y-6 backdrop-blur-md">
+                        <div>
+                            <h3 class="text-sm font-mono font-bold text-text-muted uppercase tracking-wider mb-4">Tech Stack</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-elevated/50 rounded-lg p-4 border border-border-strong">
+                                    <div class="text-accent-hover font-mono text-lg font-bold mb-1">Flask</div>
+                                    <div class="text-text-muted text-xs">Python Backend</div>
+                                </div>
+                                <div class="bg-elevated/50 rounded-lg p-4 border border-border-strong">
+                                    <div class="text-accent-hover font-mono text-lg font-bold mb-1">MySQL</div>
+                                    <div class="text-text-muted text-xs">Database</div>
+                                </div>
+                                <div class="bg-elevated/50 rounded-lg p-4 border border-border-strong">
+                                    <div class="text-accent-hover font-mono text-lg font-bold mb-1">Alpine.js</div>
+                                    <div class="text-text-muted text-xs">Reactive UI</div>
+                                </div>
+                                <div class="bg-elevated/50 rounded-lg p-4 border border-border-strong">
+                                    <div class="text-accent-hover font-mono text-lg font-bold mb-1">Tailwind</div>
+                                    <div class="text-text-muted text-xs">CSS Framework</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-6 bg-surface/30">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="space-y-8">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">A Personal Project,<br/>Available to <span class="gradient-text">Try</span></h2>
+                    <p class="text-text-muted text-lg max-w-2xl mx-auto">
+                        This is a focused backend project, shared openly to showcase its design and implementation. The source code and documentation are available on GitHub for anyone interested.  </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="https://github.com/Miku-27/LibroDB" 
+                       target="_blank"
+                       class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent-hover text-accent rounded-lg hover:bg-accent transition font-bold text-base shadow-[0_0_60px_rgb(var(--accent)_/_0.3),_0_0_120px_rgb(var(--accent)_/_0.15),_0_0_200px_rgb(var(--accent)_/_0.08)]">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                        </svg>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-elevated py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-accent rounded flex items-center justify-center text-base font-bold">L</div>
+                        <span class="text-xl font-bold tracking-tighter uppercase">Libro<span class="text-accent">DB</span></span>
+                    </div>
+                    <p class="text-text-muted text-sm max-w-md">
+                        A personal engineering project focused on clean backend design, simple data modeling, 
+                        and UI that stays out of the way.
+                    </p>
+                </div>
+                
+                <div class="md:col-start-4">
+                    <h4 class="font-bold text-sm uppercase tracking-wider mb-4">Navigation</h4>
+                    <ul class="space-y-2 text-sm text-text-muted">
+                        <li><a href="#why" class="hover:text-accent transition">Why This Exists</a></li>
+                        <li><a href="#features" class="hover:text-accent transition">What It Does</a></li>
+                        <li><a href="#tech" class="hover:text-accent transition">Technical Decisions</a></li>
+                        <li><a href="/register" class="hover:text-accent transition">Try It Out</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-elevated pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-text-muted text-sm">Built as a personal engineering project • 2026</p>
+                <div class="flex items-center gap-4">
+                    <span class="text-text-muted text-xs font-mono">Stack:</span>
+                    <div class="flex gap-2">
+                        <span class="px-2 py-1 bg-elevated rounded text-accent-hover text-xs font-mono">Flask</span>
+                        <span class="px-2 py-1 bg-elevated rounded text-accent-hover text-xs font-mono">MySQL</span>
+                        <span class="px-2 py-1 bg-elevated rounded text-accent-hover text-xs font-mono">Alpine.js</span>
+                        <span class="px-2 py-1 bg-elevated rounded text-accent-hover text-xs font-mono">Tailwind</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script defer src="{{ url_for('static', filename='js/alpine-offline.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>

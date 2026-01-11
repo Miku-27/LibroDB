@@ -24,8 +24,14 @@ def book_detail_route(book_id):
     book_result = get_book_info_service(book_id,user_id)
     return render_template("book-detail.html",book = book_result.get("data").get("book"),book_existence = book_result.get("data").get("book_existence"))
 
+@view.route("/")
+@view.route("index")
+def index_route():
+    return render_template("index.html")
+
 
 @view.route("/search-book")
+@jwt_required()
 def search_book_route():
     return render_template("search-book.html")
 
@@ -38,5 +44,8 @@ def register_route():
     return render_template("register.html")
 
 @view.route("/change-password")
+@jwt_required()
 def change_password_route():
     return render_template("change-password.html")
+
+

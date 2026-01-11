@@ -23,7 +23,7 @@ def custom_unauthorized(reason):
             "data":None
         }, 401
     else:
-        return redirect(url_for("pages.view.login"))
+        return redirect(url_for("pages.view.login_route"))
 
 
 @jwt.expired_token_loader
@@ -35,4 +35,4 @@ def custom_expired(jwt_header, jwt_payload):
         "data": None
         }, 401
     else:
-        return redirect(url_for("pages.view.login"))
+        return redirect(url_for("pages.view.login_route"))

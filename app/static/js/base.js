@@ -87,7 +87,7 @@ function navbarReactive(){
         navbarOpen: false,
         
         currentThemeIndex:0,
-        themes:['Dark','Light','Forest'],
+        themes:['Dark','Light','Snow'],
 
         init() {
             this.currentThemeIndex = parseInt(localStorage.getItem('libroTheme') || 0) ;

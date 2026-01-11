@@ -55,14 +55,6 @@ class DevelopmentConfig(BaseConfig):
     TALISMAN_ENABLED = False
     TALISMAN_FORCED_HTTPS = False
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL_DEV")
-    SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_pre_ping": True,
-        "connect_args": {
-            "ssl": {
-                "ca": os.getenv("CERT_PATH_DEV") 
-            }
-        }
-    }
     
 
 class ProductionConfig(BaseConfig):
