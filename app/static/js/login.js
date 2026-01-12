@@ -7,12 +7,12 @@ function loginHandler() {
         loading: false,
         async submitLogin() {
             this.loading = true;
-            const backendResponse = await requestBackend('/api/auth/login','POST',this.formData)
-            if (backendResponse != null){
+            const [status,data] = await requestBackend('/api/auth/token','POST',this.formData)
+            if (status){
                 window.location.href = '/library';
             }
             this.loading = false;
-        }
+        },
     }
 }
 

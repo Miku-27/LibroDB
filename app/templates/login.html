@@ -52,7 +52,13 @@
                         </button>
                     </div>
                 </div>
-    
+                
+                <a
+                    href="{{url_for('pages.view.forgot_password_route')}}" 
+                    class="text-sm text-accent hover:underline bg-transparent border-none cursor-pointer"
+                    >Forgot password?
+                </a>
+
                 <button 
                     type="submit" 
                     :disabled="loading"

@@ -7,6 +7,7 @@ class BaseConfig:
 
     RATELIMIT_DEFAULT = os.getenv("RATELIMIT_DEFAULT", "200 per day")
 
+
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_TOKEN_NAME = "access_token"
 
@@ -71,3 +72,4 @@ class ProductionConfig(BaseConfig):
             }
         }
     }
+    RATELIMIT_STORAGE_URI=os.getenv("REDIS_URL")

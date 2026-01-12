@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get('token');
 
-function forgetPasswordReactive() {
+function changePasswordReactive() {
     return {
         show: false,
         formData: {
@@ -27,7 +27,7 @@ function forgetPasswordReactive() {
                 this.loading=false;
                 return;
             }
-            const backendResponse = await requestBackend('/api/auth/password-reset','POST',this.formData)
+            const backendResponse = await requestBackend('/api/auth/password-reset','PATCH',this.formData)
             if (backendResponse != null){
                 window.location.href = '/login';
             }
@@ -35,3 +35,17 @@ function forgetPasswordReactive() {
     }
 }
 
+function forgetPasswordReactive() {
+    return {
+        formData: {
+            usermail: ''
+        },
+        loading: false,
+
+        async submitData() {
+            this.loading = true;
+            await requestBackend('/api/auth/password-reset',"POST",this.formData);
+            this.loading = false;
+        }
+    }
+}

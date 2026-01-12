@@ -17,21 +17,24 @@ async function requestBackend(url,method,dataToSend=null,contentType='applicatio
         const httpResponse = await fetch(url, options);
         response = await httpResponse.json()
         
-        if (response.status === 401) {
-            window.dispatchEvent(new CustomEvent('show-toast', { 
-                detail: {
-                    message: response.msg,
-                    type: response.success
-                }     
-            }));
-            setTimeout(() => {
-                window.location.href = "/login";
-            }, 2000);
-        }
+        // unauthorized check not needed as it is checked in backend and redirect to
+        // if (httpResponse.status === 401) {
+        //     window.dispatchEvent(new CustomEvent('show-toast', { 
+        //         detail: {
+        //             message: response.msg,
+        //             type: response.success
+        //         }     
+        //     }));
+        //     setTimeout(() => {
+        //         window.location.href = "/login";
+        //     }, 2000);
+        // }
         
+        //some data is being send likefetching request so no toast msg
         if (httpResponse.ok && response.success === true && response.data != null){
             return [true,response.data];
         }
+        //if no data is send then toast message
         else if(response.success === true && response.data == null){
             window.dispatchEvent(new CustomEvent('show-toast', { 
                 detail: {
@@ -41,6 +44,7 @@ async function requestBackend(url,method,dataToSend=null,contentType='applicatio
             }));
             return [true,null];
         }
+        //if no data and and failire toast mesg red
         else{
             window.dispatchEvent(new CustomEvent('show-toast', { 
                 detail: {
@@ -55,8 +59,8 @@ async function requestBackend(url,method,dataToSend=null,contentType='applicatio
         console.error("Network or Setup Error:", error);
         window.dispatchEvent(new CustomEvent('show-toast', { 
             detail: {
-                message: response.msg,
-                type: response.success
+                message: "Network error, Please try again!",
+                type: false
             }  
         }));
         return [false,null];
@@ -101,10 +105,27 @@ function navbarReactive(){
         },
 
         async logoutUser(){
-            const backendResponse = await requestBackend('/api/auth/logout','POST')
+            const backendResponse = await requestBackend('/api/auth/token','DELETE')
             if (backendResponse != null){
                 window.location.href = '/login';
             }
-        }
+        },
+
+        openPasswordModal: false, 
+        authPassLoading: false,
+        authPassData: {
+            oldPassword: '',
+            newPassword: ''
+        },
+        showPassword:false,
+
+        async submitAuthChangePassword() {
+            this.authPassLoading = true;
+            let [status,data] = await requestBackend('/api/auth/user', 'PATCH', this.authPassData);
+            this.openPasswordModal=false;
+            this.oldPassword = '';
+            this.newPassword = '';
+            this.authPassLoading = false;
+        },
     }
 }

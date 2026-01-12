@@ -47,6 +47,7 @@ class Result_codes:
     EMAIL_NOT_SENT="EMAIL_NOT_SENT"
     PASSWORD_RESET_SUCCESS = "PASSWORD_RESET_SUCCESS"   
     PASSWORD_RESET_FAILED = "PASSWORD_RESET_FAILED"   
+    USER_NOT_FOUND = "USER_NOT_FOUND"
 
 
 # Mapping Codes to HTTP Codes
@@ -83,6 +84,7 @@ RESP_HTTP_CODE = {
     Result_codes.BOOK_ALREADY_EXISTS:409,
     Result_codes.JSON_REQUIRED:415,
     Result_codes.INVALID_INPUT: 400,
+    Result_codes.USER_NOT_FOUND :404,
     
     # 500s: Server Errors
     Result_codes.INTERNAL_SERVER_ERROR: 500,
@@ -132,7 +134,8 @@ RESP_MESSAGES = {
     Result_codes.EMAIL_SENT:"If an account is associated with this email, you will receive a reset link shortly.",
     Result_codes.EMAIL_NOT_SENT:"If an account is associated with this email, you will receive a reset link shortly.",
     Result_codes.PASSWORD_RESET_FAILED:"Failed to reset password please try again with new request",
-    Result_codes.PASSWORD_RESET_SUCCESS:"Password was succesfully updated"
+    Result_codes.PASSWORD_RESET_SUCCESS:"Password was succesfully updated",
+    Result_codes.USER_NOT_FOUND : "User account no longer exists."
 }
 
 def finalize_to_Flask_response(service_layer_response=None,success=None,data=None,code=None,cstm_msg=None):

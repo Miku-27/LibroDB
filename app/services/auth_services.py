@@ -5,7 +5,7 @@ from app.utils.codes  import Result_codes
 from app.services.email_service import EmailService
 import secrets
 from datetime import datetime, timezone,timedelta
-
+import os
 import logging
 
 logger = logging.getLogger(__name__)
@@ -75,19 +75,10 @@ def intialize_password_reset_request(email):
             "status_code": Result_codes.EMAIL_NOT_SENT,
             "data": None
         }
+        
         generated_reset_token = secrets.token_urlsafe(32)
-        email_client = EmailService()
-        subject = "Password Reset Request"
-        body = f"Hello, click here to reset your password: http://yourapp.com/reset/{generated_reset_token}"
-        
-        email_client.send_email_async(
-            to=email,
-            subject=subject,
-            body=body
-        )
-        
         now = datetime.now(timezone.utc)
-        db.session.query(PasswordResetToken).filter(PasswordResetToken.token_used == True,PasswordResetToken.expires_at < now).delete()
+        db.session.query(PasswordResetToken).filter((PasswordResetToken.token_used == True) | (PasswordResetToken.expires_at < now)).delete()
         db.session.flush()
         new_token = PasswordResetToken(
             user_id = user_id,
@@ -96,6 +87,18 @@ def intialize_password_reset_request(email):
         ) 
         db.session.add(new_token)
         db.session.commit()
+
+        website_url = os.getenv("WEBSITE_URL")
+        email_client = EmailService()
+        subject = "Password Reset Request"
+        body = f"Hello, click here to reset your password: {website_url}/change-password?token={generated_reset_token}"
+        
+        email_client.send_email_async(
+            to=email,
+            subject=subject,
+            body=body
+        )
+
         return {
             "success": True,
             "status_code": Result_codes.EMAIL_SENT,
@@ -136,6 +139,40 @@ def intialize_password_reset(reset_token,new_password):
             "status_code": Result_codes.PASSWORD_RESET_SUCCESS,
             "data": None
         }
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        logger.exception("Database error during Trying to reset password")
+        return {
+            "success": False,
+            "status_code": Result_codes.INTERNAL_SERVER_ERROR,
+            "data": None
+        }   
+
+def change_password_service(user_id,old_password,new_password):
+    try:
+        user = db.session.query(User).filter(User.id==user_id , ).first()
+        if not user:
+            return {
+                "success": False,
+                "status_code": Result_codes.USER_NOT_FOUND,
+                "data":None
+            }
+        password_match = user.check_hashed_password(old_password)
+        if not password_match:
+            return {
+                "success": False,
+                "status_code": Result_codes.INVALID_CREDENTIALS,
+                "data": None
+            }   
+        
+        user.set_hashed_password(new_password)
+
+        db.session.commit()
+        return {
+            "success":True,
+            "status_code": Result_codes.PASSWORD_RESET_SUCCESS,
+            "data": None
+        }   
     except SQLAlchemyError as e:
         db.session.rollback()
         logger.exception("Database error during Trying to reset password")

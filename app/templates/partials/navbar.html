@@ -35,9 +35,9 @@
                         <p class="text-[10px] font-bold text-text-dim uppercase tracking-widest">User Settings</p>
                     </div>
 
-                    <a href="/profile" class="flex items-center px-4 py-2 text-sm text-accent-hover hover:bg-elevated hover:text-accent transition">
-                        Change Password
-                    </a>
+                    <button @click="openPasswordModal=!openPasswordModal" class="w-full flex items-center justify-start px-4 py-2 text-sm text-accent-hover hover:bg-elevated hover:text-accent transition">
+                        <span>Change Password</span>
+                    </button>
 
                     <button @click="toggleThemes()" class="w-full flex justify-between items-center px-4 py-2 text-sm text-accent-hover hover:bg-elevated hover:text-accent transition">
                         <span>Theme</span>
@@ -46,11 +46,87 @@
 
                     <div class="h-px bg-elevated my-1"></div>
 
-                    <a @click="logoutUser()" class="flex items-center px-4 py-2 text-sm text-danger hover:bg-danger-bg/10 transition">
+                    <button @click="logoutUser()" class="w-full flex items-center px-4 py-2 text-sm text-danger hover:bg-danger-bg/10 transition">
                         Logout
-                    </a>
+                    </button>   
                 </div>
+
+                <!-- modal for password chnage -->
+                <template x-teleport="body">
+                    <div x-show="openPasswordModal"  
+                     class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                     x-cloak>
+
+                    <div @click.away="openPasswordModal = false" 
+                         class="bg-surface border border-elevated w-full max-w-md rounded-2xl p-8 shadow-2xl">
+
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold text-text-main">Change Password</h3>
+                            <p class="text-xs text-text-dim mt-1 uppercase tracking-widest font-mono">Secure Update</p>
+                        </div>
+                    
+                        <form @submit.prevent="submitAuthChangePassword" class="space-y-4">
+                            <div class="space-y-2"> 
+                                <label class="block text-[10px] font-bold text-text-muted uppercase tracking-widest font-mono">
+                                    Current Password
+                                </label>
+                        
+                                <div class="relative">
+                                    <input 
+                                        :type="showPassword ? 'text' : 'password'" 
+                                        x-model="authPassData.oldPassword"
+                                        placeholder="Enter old password"
+                                        required
+                                        class="w-full bg-elevated border border-border-strong rounded-lg px-4 py-2.5 pr-12 text-sm focus:ring-1 focus:ring-accent outline-none transition"
+                                    />
+                                    <button type="button" 
+                                            @click="showPassword = !showPassword" 
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-accent-hover focus:outline-none">
+                                        <svg x-show="!showPassword" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <svg x-show="showPassword" x-cloak xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2"> 
+                                <label class="block text-[10px] font-bold text-text-muted uppercase tracking-widest font-mono">
+                                    New Password
+                                </label>
+                        
+                                <div class="relative">
+                                    <input 
+                                        :type="showPassword ? 'text' : 'password'" 
+                                        x-model="authPassData.newPassword"
+                                        placeholder="Enter new password"
+                                        required
+                                        class="w-full bg-elevated border border-border-strong rounded-lg px-4 py-2.5 pr-12 text-sm focus:ring-1 focus:ring-accent outline-none transition"
+                                    />
+                                </div>
+                            </div>
+                        
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" @click="openPasswordModal = false"
+                                        class="flex-1 px-4 py-2.5 border border-elevated rounded-lg text-sm font-bold uppercase tracking-widest hover:bg-white/5 transition">
+                                    Cancel
+                                </button>
+                                <button type="submit" :disabled="authPassLoading"
+                                        class="flex-1 px-4 py-2.5 bg-accent text-black rounded-lg text-sm font-bold uppercase tracking-widest hover:bg-accent-hover transition disabled:opacity-50">
+                                    <span x-show="!authPassLoading">Update</span>
+                                    <span x-show="authPassLoading">...</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
 </nav>
+
+
+    

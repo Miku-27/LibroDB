@@ -1,7 +1,6 @@
 const root = document.documentElement;
 function indexReactive(){
-    return{
-        
+    return{    
         currentThemeIndex:0,
         themes:['Dark','Light','Snow'],
 

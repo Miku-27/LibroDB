@@ -29,6 +29,10 @@ def book_detail_route(book_id):
 def index_route():
     return render_template("index.html")
 
+@view.route("/forgot-password")
+def forgot_password_route():
+    return render_template("request-forgot-password.html")
+
 
 @view.route("/search-book")
 @jwt_required()
@@ -44,7 +48,7 @@ def register_route():
     return render_template("register.html")
 
 @view.route("/change-password")
-@jwt_required()
+@jwt_required
 def change_password_route():
     return render_template("change-password.html")
 
