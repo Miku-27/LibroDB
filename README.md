@@ -104,6 +104,13 @@ To prevent common vulnerabilities, LibroDB implements:
 
 ---
 
+## 🚧 Known Issues & Roadmap
+- **Password Reset:** Currently disabled in production due to Render's outbound SMTP 
+  limitations on the Free Tier.
+- **Planned Fix:** Migrating from `smtplib` to a REST API-based provider (SendGrid/Resend) 
+  to bypass port restrictions.
+
+  ---
 ## 📝 Notes
 
 * **Token Expiration:** JWTs expire every 60 minutes.
