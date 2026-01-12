@@ -13,6 +13,14 @@ function loginHandler() {
             }
             this.loading = false;
         },
+
+        currentThemeIndex:0,
+        themes:['Dark','Light','Snow'],
+
+        init() {
+            this.currentThemeIndex = parseInt(localStorage.getItem('libroTheme') || 0) ;
+            root.setAttribute('data-theme', this.themes[this.currentThemeIndex]);
+        },
     }
 }
 
