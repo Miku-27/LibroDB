@@ -1,4 +1,5 @@
 # LibroDB - Personal Library Management System
+[**🌐 Explore the Live App on Render**](https://librodb.onrender.com)
 
 **LibroDB** is a clean, opinionated personal book library management system. Built as a focused engineering project, it emphasizes backend clarity, structured data modeling, and a "UI without complexity" philosophy.
 
