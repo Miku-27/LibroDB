@@ -2,9 +2,7 @@
 
 **LibroDB** is a clean, opinionated personal book library management system. Built as a focused engineering project, it emphasizes backend clarity, structured data modeling, and a "UI without complexity" philosophy.
 
-The system allows users to search the global Google Books catalog, maintain a personal digital library, track reading progress, and organize books into custom collections.
-
----
+The system allows users to search the global Google Books catalog, maintain a personal digital library, track reading progress, and organize books into custom collections.<br/>
 
 ## 🚀 Project Philosophy
 
@@ -14,7 +12,7 @@ This project was built to explore the end-to-end development of a secure web sys
 * **Intentional Simplicity:** A minimal UI using Alpine.js and Tailwind CSS designed to support, not overshadow, the backend.
 * **Security First:** Implementation of JWT-based authentication via HttpOnly cookies and robust CSRF protection.
 
----
+<br/>
 
 ## 🛠️ Tech Stack
 
@@ -24,7 +22,7 @@ This project was built to explore the end-to-end development of a secure web sys
 * **Authentication:** JWT tokens stored in HttpOnly cookies.
 * **Integrations:** Google Books API for external book data.
 
----
+<br/>
 
 ## ✨ Key Features
 
@@ -39,7 +37,7 @@ This project was built to explore the end-to-end development of a secure web sys
 
 
 
----
+<br/>
 
 ## 📖 API Overview
 
@@ -49,9 +47,9 @@ The API is versioned at `v0.1.0` and follows RESTful principles.
 
 | Method | Endpoint | Description |
 | --- | --- | --- |
-| `POST` | `/api/auth/register` | Create a new user account |
-| `POST` | `/api/auth/login` | Authenticate and receive JWT cookie |
-| `POST` | `/api/auth/logout` | Clear session cookies |
+| `POST` | `/api/auth/user` | Create a new user account |
+| `POST` | `/api/auth/token` | Authenticate and receive JWT cookie |
+| `DELETE` | `/api/auth/token` | Clear session cookies |
 
 ### Library & Collection Endpoints
 
@@ -64,7 +62,7 @@ The API is versioned at `v0.1.0` and follows RESTful principles.
 | `POST` | `/api/collections/` | Create a new collection |
 | `POST` | `/api/collections/{id}/book/{id}` | Add library book to collection |
 
----
+<br/>
 
 ## 🛠️ Getting Started
 
@@ -92,7 +90,7 @@ print(response.json())
 
 ```
 
----
+<br/>
 
 ## 🛡️ Security Implementation
 
@@ -102,15 +100,22 @@ To prevent common vulnerabilities, LibroDB implements:
 2. **CSRF Tokens:** Required in custom headers for all state-changing requests.
 3. **Security Headers:** Configured Content Security Policy (CSP), Frame Options (DENY), and Referrer Policy.
 
----
+<br/>
 
+## 🚧 Known Issues & Roadmap
+- **Password Reset:** Currently disabled in production due to Render's outbound SMTP 
+  limitations on the Free Tier.
+- **Planned Fix:** Migrating from `smtplib` to a REST API-based provider (SendGrid/Resend) 
+  to bypass port restrictions.
+
+  <br/>
 ## 📝 Notes
 
 * **Token Expiration:** JWTs expire every 60 minutes.
 * **Case Sensitivity:** Status and language filters are automatically normalized to lowercase.
 * **Database:** All operations use transactions with automatic rollback on failure.
 
----
+<br/>
 
 ## ⚖️ Disclaimer & Data Usage
 This project is a personal portfolio piece built for educational and engineering demonstration purposes. 
