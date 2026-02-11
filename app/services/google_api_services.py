@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes"
 
-def search_books(query,page=1,max_results=5,by_volume=False,):
+def search_books(GOOGLE_API_KEY,query,page=1,max_results=5,by_volume=False,):
 
 
     offset = (page-1)*max_results
@@ -15,12 +15,13 @@ def search_books(query,page=1,max_results=5,by_volume=False,):
     params = {
         "q": query,
         "maxResults": max_results,
-        "startIndex":offset
+        "startIndex":offset,
+        "key":GOOGLE_API_KEY
     }
 
     try:
         if by_volume:
-            response = requests.get(GOOGLE_BOOKS_API_URL+"/"+query)
+            response = requests.get(GOOGLE_BOOKS_API_URL,params={"q":query,"key":GOOGLE_API_KEY,})
         else:
             response = requests.get(GOOGLE_BOOKS_API_URL, params=params)
         
