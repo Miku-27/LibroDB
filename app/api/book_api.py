@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request,current_app
 from flask_jwt_extended import jwt_required
 
 from app.services.google_api_services import search_books
@@ -22,7 +22,7 @@ def search_books_globally():
     
     if not query:
         return finalize_to_Flask_response(None,False,None,Result_codes.INVALID_INPUT)
-    
-    result = search_books(query,page_number,books_per_page)
+    api_key=current_app.config["GOOGLE_API_KEY"]
+    result = search_books(api_key,query,page_number,books_per_page)
     
     return finalize_to_Flask_response(result)
