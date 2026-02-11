@@ -216,7 +216,7 @@ def remove_from_userlib(book_google_id,user_id):
             "data": None
         }
     
-def get_book_info_service(book_google_id,user_id): 
+def get_book_info_service(api_key,book_google_id,user_id): 
 
     try:
         book = db.session.query(Book).filter(Book.google_id == book_google_id).first()
@@ -229,7 +229,7 @@ def get_book_info_service(book_google_id,user_id):
             book = book_object_to_dict(book)
     
         else:
-            response = search_books(book_google_id,by_volume=True)
+            response = search_books(api_key,book_google_id,by_volume=True)
             if not response.get("success"):
                 return{
                     "success": False,
