@@ -4,7 +4,7 @@ from datetime import timedelta
 class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-
+    GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
     RATELIMIT_DEFAULT = os.getenv("RATELIMIT_DEFAULT", "200 per day")
 
 
